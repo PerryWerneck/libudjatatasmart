@@ -21,7 +21,7 @@
 
 Summary:		ATA S.M.A.R.T. Disk Health Monitoring module for %{product_name} 
 Name:			udjat-module-atasmart
-Version:		1.0
+Version: 1.0
 Release:		0
 License:		LGPL-3.0
 Source:			%{name}-%{version}.tar.xz
