@@ -18,7 +18,7 @@
  */
 
  /**
-  * @brief Implements SMART device object.
+  * @brief Implements SMART agent.
   *
   * <http://0pointer.de/blog/projects/being-smart.html>
   * <http://git.0pointer.net/libatasmart.git/tree/skdump.c>
@@ -28,6 +28,7 @@
   *
   */
 
+/*
  #include <config.h>
  #include <udjat/defs.h>
 
@@ -304,4 +305,5 @@
 
 
  }
+*/
 

@@ -18,29 +18,20 @@
  */
 
  #include <config.h>
-
- #include <udjat/tools/application.h>
- #include <udjat/tools/http/client.h>
- #include <udjat/tools/logger.h>
- #include <udjat/agent.h>
- #include <udjat/factory.h>
+ #include <udjat/defs.h>
+ #include <udjat/tests.h>
  #include <udjat/module.h>
- #include <iostream>
- #include <memory>
 
- using namespace std;
  using namespace Udjat;
 
-//---[ Implement ]------------------------------------------------------------------------------------------
+ int main(int argc, char **argv) {
 
-int main(int argc, char **argv) {
+	static const ModuleInfo info{"atasmart-tester"};
+	
+	return Testing::run(argc,argv,info,[](Application &){
 
-	Logger::verbosity(9);
-	Logger::console(true);
-	Logger::redirect();
+	 	udjat_module_init();
 
-	udjat_module_init();
+	});
 
-	return Application{}.run(argc,argv,"./test.xml");
-
-}
+ }

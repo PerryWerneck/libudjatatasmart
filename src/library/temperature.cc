@@ -20,6 +20,7 @@
  #include <udjat/tools/temperature.h>
  #include <sstream>
  #include <cmath>
+ #include <iomanip>
 
  using namespace std;
 
@@ -81,7 +82,7 @@
 		throw runtime_error("Cant convert temperature unity");
 	}
 
-	Temperature & Temperature::set(const enum Unity unity) {
+	Temperature & Temperature::set(const Unity unity) {
 
 		switch(unity) {
 		case Kelvin:
@@ -116,10 +117,7 @@
 		// https://www.delftstack.com/howto/cpp/how-to-convert-float-to-string-in-cpp/
 		// https://www.delftstack.com/howto/cpp/cpp-round-to-2-decimals/
 		std::stringstream sstream;
-
-		sstream << this->value;
-		sstream << " °" << ((char) this->unity);
-
+		sstream << setprecision(1) << this->value << " °" << ((char) this->unity);
 		return sstream.str();
 
 	}
