@@ -28,6 +28,146 @@
   *
   */
 
+ #include <config.h>
+ #include <udjat/defs.h>
+ #include <udjat/agent/abstract.h>
+ #include <udjat/agent.h>
+ #include <memory>
+ #include <udjat/agent/atasmart.h>
+ #include <udjat/tools/string.h>
+ #include <udjat/tools/intl.h>
+ #include <atasmart.h>
+
+ using namespace std;
+
+ namespace Udjat {
+
+	std::shared_ptr<Abstract::Agent> Smart::Agent::Factory::AgentFactory(const Abstract::Object &, const XML::Node &node) const {
+		return make_shared<Smart::Agent>(node);
+	}
+
+	static const char * NameFactory(const char * devname) {
+
+		if(devname && *devname) {
+			const char * ptr = strrchr(devname,'/');
+			if(ptr && (ptr+1))
+				return String{ptr+1}.as_quark();
+
+
+			return String{devname}.as_quark();
+		}
+
+		throw runtime_error("Missing required attribute 'device-name'");
+
+	}
+
+	Smart::Agent::Agent(const char *name) : Udjat::Agent<unsigned short>{NameFactory(name)}, devname{name} {
+	}
+
+	Smart::Agent::Agent(const pugi::xml_node &node) : Udjat::Agent<unsigned short>{node}, devname{String{node,"device"}.c_str()} {
+	}
+
+	Smart::Agent::Agent(const char *name, const pugi::xml_node &node) : Udjat::Agent<unsigned short>{node}, devname{name} {
+	}
+
+	Smart::Agent::~Agent() {
+	}
+
+	std::shared_ptr<Abstract::State> Smart::Agent::computeState() {
+
+		unsigned short value = super::get();
+
+		// Check registered states.
+		for(auto state : states) {
+			if(state->compare(value))
+				return state;
+		}
+
+		// Not found, check the predefined ones.
+		static const struct {
+			unsigned short	  value;		///< @brief Agent value for the state.
+			const char 		* name;			///< @brief State name.
+			Udjat::Level	  level;		///< @brief State level.
+			const char		* summary;		///< @brief State summary.
+			const char		* body;			///< @brief State description
+		} predefined_states[] = {
+
+			{
+				SK_SMART_OVERALL_GOOD,
+				"good",
+				Udjat::ready,
+				N_( "${name} Health is Good" ),
+				""
+			},
+			{
+				SK_SMART_OVERALL_BAD_ATTRIBUTE_IN_THE_PAST,
+				"badonthepast",
+				Udjat::ready,
+				N_( "Pre fail in the past on ${name}" ),
+				N_( "At least one pre-fail attribute exceeded its threshold in the past on ${name}" )
+			},
+			{
+				SK_SMART_OVERALL_BAD_SECTOR,
+				"badsector",
+				Udjat::warning,
+				N_( "Bad sector on ${name}" ),
+				N_( "At least one bad sector on ${name}" )
+			},
+			{
+				SK_SMART_OVERALL_BAD_ATTRIBUTE_NOW,
+				"badattribute",
+				Udjat::error,
+				N_( "Pre fail exceeded on ${name}" ),
+				N_( "At least one pre-fail attribute is exceeding its threshold now on ${name}" )
+			},
+			{
+				SK_SMART_OVERALL_BAD_SECTOR_MANY,
+				"manybad",
+				Udjat::error,
+				N_( "Too many bad sectors on ${name}" ),
+				""
+			},
+			{
+				SK_SMART_OVERALL_BAD_STATUS,
+				"badstatus",
+				Udjat::error,
+				N_( "Smart Self Assessment negative on ${name}" ),
+				""
+			},
+
+		};
+
+		for(const auto &state : predefined_states) {
+
+			if(state.value == value) {
+
+				// Found internal state, use it.
+				return Abstract::Agent::StateFactory(
+					state.name,
+					Udjat::Level::critical,
+#ifdef GETTEXT_PACKAGE
+					dgettext(GETTEXT_PACKAGE,state.summary),
+					dgettext(GETTEXT_PACKAGE,state.body)
+#else
+					state.summary,
+					state.body
+#endif
+				);
+
+			}
+
+		}
+
+		Logger::String{"Unable to identify state for value '",((int) value),"'"}.warning(name());
+
+		// Still not found, use the default one.
+		return Abstract::Agent::computeState();
+
+	}
+
+
+ }
+
 /*
  #include <config.h>
  #include <udjat/defs.h>
@@ -86,102 +226,6 @@
 
 	std::shared_ptr<Abstract::State> Smart::Agent::computeState() {
 
-		unsigned short value = super::get();
-
-		// Check registered states.
-		for(auto state : states) {
-			if(state->compare(value))
-				return state;
-		}
-
-		// Not found, check the predefined ones.
-		static const struct {
-			unsigned short					  value;		///< @brief Agent value for the state.
-			const char 						* name;			///< @brief State name.
-			Udjat::Level					  level;		///< @brief State level.
-			const char						* summary;		///< @brief State summary.
-			const char						* body;			///< @brief State description
-		} predefined_states[] = {
-
-			{
-				SK_SMART_OVERALL_GOOD,
-				"good",
-				Udjat::ready,
-				N_( "${name} Health is Good" ),
-				""
-			},
-			{
-				SK_SMART_OVERALL_BAD_ATTRIBUTE_IN_THE_PAST,
-				"badonthepast",
-				Udjat::ready,
-				N_( "Pre fail in the past on ${name}" ),
-				N_( "At least one pre-fail attribute exceeded its threshold in the past on ${name}" )
-			},
-			{
-				SK_SMART_OVERALL_BAD_SECTOR,
-				"badsector",
-				Udjat::warning,
-				N_( "Bad sector on ${name}" ),
-				N_( "At least one bad sector on ${name}" )
-			},
-			{
-				SK_SMART_OVERALL_BAD_ATTRIBUTE_NOW,
-				"badattribute",
-				Udjat::error,
-				N_( "Pre fail exceeded on ${name}" ),
-				N_( "At least one pre-fail attribute is exceeding its threshold now on ${name}" )
-			},
-			{
-				SK_SMART_OVERALL_BAD_SECTOR_MANY,
-				"manybad",
-				Udjat::error,
-				N_( "Too many bad sectors on ${name}" ),
-				""
-			},
-			{
-				SK_SMART_OVERALL_BAD_STATUS,
-				"badstatus",
-				Udjat::error,
-				N_( "Smart Self Assessment negative on ${name}" ),
-				""
-			},
-
-		};
-
-		for(size_t ix = 0; ix < N_ELEMENTS(predefined_states); ix++) {
-
-			if(predefined_states[ix].value == value) {
-
-				// Found internal state, use it.
-#ifdef GETTEXT_PACKAGE
-				String summary{dgettext(GETTEXT_PACKAGE,predefined_states[ix].summary)};
-				String body{dgettext(GETTEXT_PACKAGE,predefined_states[ix].body)};
-#else
-				String summary{predefined_states[ix].summary};
-				String body{predefined_states[ix].body};
-#endif // GETTEXT_PACKAGE
-
-				summary.expand(*this,true,true);
-				body.expand(*this,true,true);
-
-				auto new_state =
-					make_shared<Udjat::State<unsigned short>>(
-						predefined_states[ix].name,
-						predefined_states[ix].value,
-						predefined_states[ix].level,
-						Quark(summary).c_str(),
-						Quark(body).c_str()
-					);
-
-				states.push_back(new_state);
-				return new_state;
-
-			}
-
-		}
-
-		// Still not found, use the default one.
-		return Abstract::Agent::computeState();
 	}
 
 	void Smart::Agent::init() {

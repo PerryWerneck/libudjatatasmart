@@ -47,9 +47,12 @@ subdir('po')
 # Required libraries
 #
 libudjat = dependency('libudjat') 
+sysinfo = dependency('libudjatsysinfo-static', required: false)
 lib_deps = [
   libudjat,
+  sysinfo,
   dependency('libatasmart')
+
 ]
 
 #
@@ -100,6 +103,10 @@ app_conf.set('PRODUCT_VERSION', libudjat.version())
 
 if cxx.compiles('#include <unistd.h>', name : 'unistd.h')
   app_conf.set('HAVE_UNISTD_H', 1)
+endif
+
+if sysinfo.found()
+  app_conf.set('HAVE_UDJAT_SYSINFO', 1)
 endif
 
 includes_dir = include_directories('src/include')
@@ -274,7 +281,11 @@ install_headers(
 )
 
 install_headers(
+  'src/include/udjat/agent/atasmart.h',
+  subdir: 'udjat/agent'  
+)
+
+install_headers(
   'src/include/udjat/tools/atasmart/disk.h',
-  'src/include/udjat/tools/atasmart/agent.h',
   subdir: 'udjat/tools/atasmart'  
 )
