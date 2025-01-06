@@ -36,8 +36,8 @@
  #include <udjat/agent/atasmart.h>
  #include <udjat/tools/string.h>
  #include <udjat/tools/intl.h>
- #include <atasmart.h>
-
+ #include <udjat/tools/atasmart/disk.h>
+ 
  using namespace std;
 
  namespace Udjat {
@@ -50,8 +50,9 @@
 
 		if(devname && *devname) {
 			const char * ptr = strrchr(devname,'/');
-			if(ptr && (ptr+1))
+			if(ptr && *ptr && ptr[1]) {
 				return String{ptr+1}.as_quark();
+			}
 
 
 			return String{devname}.as_quark();
@@ -71,6 +72,14 @@
 	}
 
 	Smart::Agent::~Agent() {
+	}
+
+	void Smart::Agent::start() {
+		super::start((unsigned short) Smart::Disk(devname).read().getOverral());
+	}
+
+	bool Smart::Agent::refresh() {
+		return set((unsigned short) Smart::Disk(devname).read().getOverral());
 	}
 
 	std::shared_ptr<Abstract::State> Smart::Agent::computeState() {

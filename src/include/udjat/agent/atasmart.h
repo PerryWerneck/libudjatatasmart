@@ -59,6 +59,8 @@
 				return this->devname;
 			}
 
+			void start() override;
+			
 			/// @brief Get device status, update internal state.
 			bool refresh() override;
 
