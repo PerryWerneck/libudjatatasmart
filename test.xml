@@ -6,11 +6,8 @@
 	<module name='civetweb' required='no' />
 	<module name='information' required='no' />
 
-	<!-- atasmart device-name='/dev/sda' / -->
-
-	<atasmart name='sda' device-name='/dev/sda' diskstats='true' update-timer='5' />
-
-	<!-- atasmart name='storage' diskstats='true' update-timer='1' / -->
+	<!-- Container with all physical disks -->
+	<agent name='physical' type='storage' update-timer='5' />
 	
 </config>
 

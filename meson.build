@@ -118,6 +118,7 @@ lib_src = [
   'src/library/temperature.cc',
   'src/library/agent.cc',
   'src/library/disk.cc',
+  'src/library/module.cc',
 ]
 
 module_src = [
@@ -150,6 +151,7 @@ if host_machine.system() == 'windows'
   pkg.generate(
     name: 'lib' + meson.project_name() + '-static',
     description: project_description,
+    requires: sysinfo,
     libraries: [ 
       '-l' + meson.project_name(),
     ]
@@ -170,7 +172,7 @@ else
   pkg.generate(
     name: 'lib' + meson.project_name() + '-static',
     description: project_description,
-    requires: [ 'libatasmart' ],
+    requires: sysinfo,
     libraries: [ '-l:lib' + meson.project_name() + '.a' ]
   )
 
@@ -288,4 +290,9 @@ install_headers(
 install_headers(
   'src/include/udjat/tools/atasmart/disk.h',
   subdir: 'udjat/tools/atasmart'  
+)
+
+install_headers(
+  'src/include/udjat/module/atasmart.h',
+  subdir: 'udjat/module'  
 )

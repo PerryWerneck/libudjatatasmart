@@ -37,42 +37,115 @@
  #include <udjat/tools/string.h>
  #include <udjat/tools/intl.h>
  #include <udjat/tools/atasmart/disk.h>
+
+#ifdef HAVE_UDJAT_SYSINFO
+ #include <udjat/tools/disk/stat.h>
+#endif
  
  using namespace std;
 
  namespace Udjat {
 
+	const char * Smart::Agent::NameFactory(const char * devname) {
+
+		if(!(devname && *devname)) {
+			throw runtime_error("Missing required attribute 'device-name'");
+		}
+
+		const char *ptr = strrchr(devname,'/');
+		if(ptr && ptr[1]) {
+			return String{(ptr+1)}.as_quark();
+		}
+
+		return String{devname}.as_quark();
+
+	}
+
+	const char * Smart::Agent::DeviceNameFactory(const char * devname) {
+
+		if(!(devname && *devname)) {
+			throw runtime_error("Missing required attribute 'device-name'");
+		}
+
+		String result{devname};
+
+		if(result.has_prefix("/dev/")) {
+			return result.as_quark();
+		}
+
+		return String{"/dev/",devname}.as_quark();
+
+	}
+
+	const char * Smart::Agent::DeviceNameFactory(const XML::Node &node) {
+
+		String devname{node,"device-name"};
+		if(!devname.empty()) {
+			return DeviceNameFactory(devname.c_str());
+		}
+
+		return DeviceNameFactory(String{node,"name"}.c_str());
+	}
+
+	Smart::Agent::Factory::Factory(const char *name) : Udjat::Abstract::Agent::Factory{name} {
+		debug("----> Build AgentFactory(",name,")");
+	}
+
 	std::shared_ptr<Abstract::Agent> Smart::Agent::Factory::AgentFactory(const Abstract::Object &, const XML::Node &node) const {
+
+		String devname{node,"device-name"};
+		if(devname.empty()) {
+			// No device-name, create container agent with all devices.
+
+#ifdef HAVE_UDJAT_SYSINFO
+			Logger::String{"No device name, building container with all physical disks"}.trace(String{node,"name",PACKAGE_NAME}.c_str());
+
+			/// @brief Agent with all physical disks.
+			class Storages : public Abstract::Agent {
+			public:
+				Storages(const XML::Node &node) : Abstract::Agent{"storage",_("Storage"),_("Physical disks")} {
+
+					Object::properties.icon = "drive-multidisk";
+
+					for(const Udjat::Disk::Stat &disk : Udjat::Disk::Stat::get()) {
+
+						if(!disk.name.empty() && disk.physical()) {
+							Logger::String{"Build child '",disk.name.c_str(),"'"}.trace(name());
+							std::shared_ptr<Udjat::Abstract::Agent> agent = make_shared<Smart::Agent>(String{disk.name}.as_quark(),node);
+							Udjat::Abstract::Agent::push_back(agent);
+						}
+
+					}
+
+				}
+
+			};
+
+			return make_shared<Storages>(node);
+#else 
+			throw logic_error("Unable to build storage agent, the support was not enabled during library build");
+#endif
+		}
+
+		// Build standard agent.
 		return make_shared<Smart::Agent>(node);
 	}
 
-	static const char * NameFactory(const char * devname) {
-
-		if(devname && *devname) {
-			const char * ptr = strrchr(devname,'/');
-			if(ptr && *ptr && ptr[1]) {
-				return String{ptr+1}.as_quark();
-			}
-
-
-			return String{devname}.as_quark();
-		}
-
-		throw runtime_error("Missing required attribute 'device-name'");
-
+	Smart::Agent::Agent(const char *name) : Udjat::Agent<unsigned short>{NameFactory(name)}, devname{DeviceNameFactory(name)} {
+		init();
 	}
 
-	Smart::Agent::Agent(const char *name) : Udjat::Agent<unsigned short>{NameFactory(name)}, devname{name} {
+	Smart::Agent::Agent(const pugi::xml_node &node) : Udjat::Agent<unsigned short>{node}, devname{DeviceNameFactory(node)} {
+		init();
 	}
 
-	Smart::Agent::Agent(const pugi::xml_node &node) : Udjat::Agent<unsigned short>{node}, devname{String{node,"device"}.c_str()} {
-	}
-
-	Smart::Agent::Agent(const char *name, const pugi::xml_node &node) : Udjat::Agent<unsigned short>{node}, devname{name} {
+	Smart::Agent::Agent(const char *name, const pugi::xml_node &node) : Udjat::Agent<unsigned short>{NameFactory(name),node,(unsigned short) -1}, devname{DeviceNameFactory(name)} {
+		init();
 	}
 
 	Smart::Agent::~Agent() {
 	}
+
 
 	void Smart::Agent::start() {
 		super::start((unsigned short) Smart::Disk(devname).read().getOverral());
@@ -80,6 +153,43 @@
 
 	bool Smart::Agent::refresh() {
 		return set((unsigned short) Smart::Disk(devname).read().getOverral());
+	}
+
+	void Smart::Agent::init() {
+
+		Object::properties.icon = "drive-harddisk";
+
+		if(!(Object::properties.label && *Object::properties.label)) {
+			Object::properties.label = Logger::Message{"Storage in {}",devname}.as_quark();
+		}
+
+		// Get data from disk.
+
+		try {
+
+			Smart::Disk disk(devname);
+
+			auto ipd = disk.read().identify();
+
+			string summary{ipd->model};
+
+			try {
+
+				Object::properties.summary = String{ipd->model," (",disk.formattedSize().c_str(),")"}.as_quark();
+
+			} catch(const std::exception &e) {
+
+				error() << e.what();
+				Object::properties.summary = _("Unable to get disk info");
+
+			}
+
+		} catch(const std::exception &e) {
+
+			error() << Logger::Message("Error '{}' getting device information",e.what()) << endl;
+
+		}
+
 	}
 
 	std::shared_ptr<Abstract::State> Smart::Agent::computeState() {
