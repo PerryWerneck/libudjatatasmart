@@ -20,7 +20,6 @@
  #pragma once
 
  #include <udjat/defs.h>
- #include <udjat/version.h>
  #include <udjat/module/abstract.h>
  #include <udjat/agent/atasmart.h>
  

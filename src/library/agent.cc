@@ -46,7 +46,7 @@
 
  namespace Udjat {
 
-	const char * Smart::Agent::NameFactory(const char * devname) {
+	String Smart::Agent::NameFactory(const char * devname) {
 
 		if(!(devname && *devname)) {
 			throw runtime_error("Missing required attribute 'device-name'");
@@ -61,7 +61,7 @@
 
 	}
 
-	const char * Smart::Agent::DeviceNameFactory(const char * devname) {
+	String Smart::Agent::DeviceNameFactory(const char * devname) {
 
 		if(!(devname && *devname)) {
 			throw runtime_error("Missing required attribute 'device-name'");
@@ -77,7 +77,7 @@
 
 	}
 
-	const char * Smart::Agent::DeviceNameFactory(const XML::Node &node) {
+	String Smart::Agent::DeviceNameFactory(const XML::Node &node) {
 
 		String devname{node,"device-name"};
 		if(!devname.empty()) {
@@ -91,7 +91,7 @@
 		debug("----> Build AgentFactory(",name,")");
 	}
 
-	std::shared_ptr<Abstract::Agent> Smart::Agent::Factory::AgentFactory(const Abstract::Object &, const XML::Node &node) const {
+	std::shared_ptr<Abstract::Agent> Smart::Agent::Factory::AgentFactory(const XML::Node &node) const {
 
 		String devname{node,"device-name"};
 		if(devname.empty()) {
@@ -131,15 +131,15 @@
 		return make_shared<Smart::Agent>(node);
 	}
 
-	Smart::Agent::Agent(const char *name) : Udjat::Agent<unsigned short>{NameFactory(name)}, devname{DeviceNameFactory(name)} {
+	Smart::Agent::Agent(const char *name) : Udjat::Agent<unsigned short>{NameFactory(name).as_quark()}, devname{DeviceNameFactory(name).as_quark()} {
 		init();
 	}
 
-	Smart::Agent::Agent(const pugi::xml_node &node) : Udjat::Agent<unsigned short>{node}, devname{DeviceNameFactory(node)} {
+	Smart::Agent::Agent(const pugi::xml_node &node) : Udjat::Agent<unsigned short>{node}, devname{DeviceNameFactory(node).as_quark()} {
 		init();
 	}
 
-	Smart::Agent::Agent(const char *name, const pugi::xml_node &node) : Udjat::Agent<unsigned short>{NameFactory(name),node,(unsigned short) -1}, devname{DeviceNameFactory(name)} {
+	Smart::Agent::Agent(const char *name, const pugi::xml_node &node) : Udjat::Agent<unsigned short>{NameFactory(name).as_quark(),node}, devname{DeviceNameFactory(name).as_quark()} {
 		init();
 	}
 

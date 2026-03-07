@@ -19,16 +19,14 @@
 
  #include <config.h>
  #include <udjat/defs.h>
- #include <udjat/tests.h>
+ #include <udjat/loader.h>
  #include <udjat/module.h>
 
  using namespace Udjat;
 
  int main(int argc, char **argv) {
 
-	static const ModuleInfo info{"atasmart-tester"};
-	
-	return Testing::run(argc,argv,info,[](Application &){
+	return loader(argc,argv,[](Application &app) -> int {
 
 	 	udjat_module_init();
 

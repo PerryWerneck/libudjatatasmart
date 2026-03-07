@@ -44,13 +44,13 @@
 			public:
 				Factory(const char *name = "storage");
 
-				std::shared_ptr<Abstract::Agent> AgentFactory(const Abstract::Object &parent, const XML::Node &node) const override;
+				std::shared_ptr<Abstract::Agent> AgentFactory(const XML::Node &node) const override;
 
 			};
 
-			static const char * NameFactory(const char * devname);
-			static const char * DeviceNameFactory(const char * devname);
-			static const char * DeviceNameFactory(const XML::Node &node);
+			static String NameFactory(const char * devname);
+			static String DeviceNameFactory(const char * devname);
+			static String DeviceNameFactory(const XML::Node &node);
 			
 			Agent(const char *name);
 			Agent(const pugi::xml_node &node);

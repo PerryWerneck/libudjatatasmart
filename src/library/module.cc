@@ -20,12 +20,9 @@
  #include <config.h>
  #include <udjat/defs.h>
  #include <udjat/module/abstract.h>
- #include <udjat/module/info.h>
  #include <udjat/module/atasmart.h>
 
  namespace Udjat {
-
-	static const Udjat::ModuleInfo moduleinfo{"ATA S.M.A.R.T. Disk Health Monitor"};
 	
 	Module * Smart::Module::Factory(const char *name) {
 		debug("---------------> Building storage module(",name,")")
@@ -33,7 +30,7 @@
 	}
 
 	Smart::Module::Module(const char *name) 
-		: Udjat::Module{name,moduleinfo} {
+		: Udjat::Module{name} {
 
 	}
 
