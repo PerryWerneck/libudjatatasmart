@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: LGPL-3.0-or-later */
 
 /*
- * Copyright (C) 2021 Perry Werneck <perry.werneck@gmail.com>
+ * Copyright (C) 2025 Perry Werneck <perry.werneck@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published
@@ -17,20 +17,29 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
- #include <config.h>
+ #pragma once
+
  #include <udjat/defs.h>
- #include <udjat/loader.h>
- #include <udjat/module.h>
+ #include <udjat/module/abstract.h>
+ #include <udjat/agent/atasmart.h>
+ 
+ #include <memory>
 
- using namespace Udjat;
+ namespace Udjat {
 
- int main(int argc, char **argv) {
+	namespace Smart {
 
-	return loader(argc,argv,[](Application &app) -> int {
+		/// @brief Generic ata S.M.A.R.T. module.
+		class UDJAT_API Module : public Udjat::Module, private Udjat::Smart::Agent::Factory {
+		public:
 
-	 	udjat_module_init();
-		return 0;
-		
-	});
+			static Udjat::Module * Factory(const char *name = "atasmart");
+
+			Module(const char *name = "atasmart");
+			virtual ~Module();
+
+		};
+
+	}
 
  }

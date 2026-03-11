@@ -20,9 +20,10 @@
  #pragma once
 
  #include <udjat/defs.h>
+ #include <udjat/agent/abstract.h>
  #include <udjat/agent.h>
- #include <udjat/tools/disk/stat.h>
-
+ #include <memory>
+ 
  namespace Udjat {
 
 	namespace Smart {
@@ -30,34 +31,41 @@
 		/// @brief S.M.A.R.T. agent.
 		class UDJAT_API Agent : public Udjat::Agent<unsigned short> {
 		private:
-			const char *devicename;
+
+			/// @brief Device name.
+			const char *devname;
 
 			/// @brief Initialize
 			void init();
 
-			/// @brief I/O unit (nullptr if disabled).
-			const Disk::Unit *unit = nullptr;
-
-			/// @brief I/O statistics.
-			Disk::Stat::Data stats;
-
 		public:
 
+			class Factory : public Udjat::Abstract::Agent::Factory {
+			public:
+				Factory(const char *name = "storage");
+
+				std::shared_ptr<Abstract::Agent> AgentFactory(const XML::Node &node) const override;
+
+			};
+
+			static String NameFactory(const char * devname);
+			static String DeviceNameFactory(const char * devname);
+			static String DeviceNameFactory(const XML::Node &node);
+			
 			Agent(const char *name);
 			Agent(const pugi::xml_node &node);
 			Agent(const char *name, const pugi::xml_node &node);
 			virtual ~Agent();
 
 			/// @brief Get device name.
-			inline const char * getDeviceName() const noexcept {
-				return this->devicename;
+			inline const char * device() const noexcept {
+				return this->devname;
 			}
 
+			void start() override;
+			
 			/// @brief Get device status, update internal state.
 			bool refresh() override;
-
-			/// @brief Export device info.
-			Udjat::Value & getProperties(Udjat::Value &value) const noexcept override;
 
 			std::shared_ptr<Abstract::State> computeState() override;
 

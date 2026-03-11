@@ -17,11 +17,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
- #include "private.h"
+ #include <config.h>
+ #include <udjat/defs.h>
  #include <udjat/tools/temperature.h>
- #include <udjat/smart/disk.h>
+ #include <udjat/tools/atasmart/disk.h>
  #include <udjat/tools/configuration.h>
-
+ #include <atasmart.h>
+ #include <system_error>
+ 
  using namespace std;
 
  namespace Udjat {
@@ -187,4 +190,3 @@
 	 }
 
  }
-

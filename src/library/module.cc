@@ -18,14 +18,25 @@
  */
 
  #include <config.h>
- #include <udjat/module.h>
+ #include <udjat/defs.h>
+ #include <udjat/module/abstract.h>
  #include <udjat/module/atasmart.h>
- #include <udjat/tools/logger.h>
 
- using namespace Udjat;
+ namespace Udjat {
+	
+	Module * Smart::Module::Factory(const char *name) {
+		debug("---------------> Building storage module(",name,")")
+		return new Smart::Module(name);
+	}
 
- Udjat::Module * udjat_module_init() {
-	return Smart::Module::Factory();
+	Smart::Module::Module(const char *name) 
+		: Udjat::Module{name} {
+
+	}
+
+ 	Smart::Module::~Module() {
+ 	}
+
  }
 
 /*
