@@ -139,7 +139,8 @@
 		init();
 	}
 
-	Smart::Agent::Agent(const char *name, const pugi::xml_node &node) : Udjat::Agent<unsigned short>{NameFactory(name).as_quark(),node}, devname{DeviceNameFactory(name).as_quark()} {
+	Smart::Agent::Agent(const char *name, const pugi::xml_node &node) : Udjat::Agent<unsigned short>{node}, devname{DeviceNameFactory(name).as_quark()} {
+		rename(NameFactory(name).as_quark());
 		init();
 	}
 

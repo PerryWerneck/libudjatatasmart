@@ -29,7 +29,8 @@
 	return loader(argc,argv,[](Application &app) -> int {
 
 	 	udjat_module_init();
-
+		return 0;
+		
 	});
 
  }
