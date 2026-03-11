@@ -51,8 +51,6 @@ sysinfo = dependency('libudjatsysinfo-static', required: false)
 lib_deps = [
   libudjat,
   sysinfo,
-  dependency('libatasmart')
-
 ]
 
 #
@@ -144,40 +142,25 @@ if host_machine.system() == 'windows'
   pkg.generate(
     name: 'lib' + meson.project_name(),
     description: project_description,
-    requires: [ 'libudjat' ],
+    requires: [ libudjat ],
+    requires_private: [ sysinfo ],
     libraries: [ '-l' + meson.project_name() + '.dll' ]
   )
 
-  pkg.generate(
-    name: 'lib' + meson.project_name() + '-static',
-    description: project_description,
-    requires: sysinfo,
-    libraries: [ 
-      '-l' + meson.project_name(),
-    ]
-  )
-
-  lib_src += [
-  ]
-
 else
+
+  atasmart = dependency('libatasmart')
+  lib_deps += [
+    atasmart
+  ]
 
   pkg.generate(
     name: 'lib' + meson.project_name(),
     description: project_description,
-    requires: [ 'libudjat', 'libatasmart' ],
+    requires: [ libudjat ],
+    requires_private: [ sysinfo, atasmart ],
     libraries: [ '-l' + meson.project_name() ]
   )
-
-  pkg.generate(
-    name: 'lib' + meson.project_name() + '-static',
-    description: project_description,
-    requires: sysinfo,
-    libraries: [ '-l:lib' + meson.project_name() + '.a' ]
-  )
-
-  lib_src += [
-  ]
 
 endif
 
