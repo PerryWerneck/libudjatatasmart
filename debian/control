@@ -1,19 +1,35 @@
-Source: udjat-module-atasmart
+Source: libudjatatasmart
 Section: unknown
 Priority: optional
 Maintainer: Perry Werneck <perry.werneck@gmail.com>
-Build-Depends: debhelper (>= 7), autotools-dev, autoconf, automake, pkg-config, gettext, libudjat-dev, libpugixml-dev, libudjatsysinfo-dev
+Build-Depends: debhelper (>= 7), meson, pkg-config, libudjat2-dev, libdbus-1-dev
+
+Package: libudjatatasmart
+Architecture: any
+Section: libs
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Provides: libudjatatasmart (= ${binary:Version})
+Description: Udjat core library.
+ Udjat core library.
 
 Package: udjat-module-atasmart
 Architecture: any
 Section: libs
-Depends: ${misc:Depends}
-Description: ATA SMART module for udjat.
- ATA S.M.A.R.T. Disk Health Monitoring module for udjat.
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: Udjat core library.
+ Udjat core library.
 
-Package: udjat-module-atasmart-dbg
+Package: libudjatatasmart-dev
 Architecture: any
-Depends: libudjat (= ${binary:Version})
-Description: Debugging symbols for udjat-module-atasmart
- This package contains the debugging symbols for udjat-module-atasmart.
+Provides: libudjatatasmart-dev (= ${binary:Version})
+Section: libdevel
+Depends: ${misc:Depends}, libdbus-1-dev, libudjat-dev, libudjatatasmart (= ${binary:Version})
+Description: Libudjat development files.
+ Development headers for libudjatatasmart
+
+Package: libudjatatasmart-dbg
+Architecture: any
+Depends: libudjatatasmart (= ${binary:Version})
+Description: Debugging symbols for libudjatatasmart
+ This package contains the debugging symbols for libudjatatasmart.
 

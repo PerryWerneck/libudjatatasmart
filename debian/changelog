@@ -1,7 +1,7 @@
-udjat-module-atasmart (1.0-0) unstable; urgency=low
+libudjatatasmart (2.0.2+git20250704) unstable; urgency=low
 
   * Initial Release
 
- -- Perry Werneck <perry.werneck@gmail.com>  Wed, 2 May 2012 15:20:56 -0300
+ -- Perry Werneck <perry.werneck@gmail.com>  Wed, 12 Dec 2024 15:30:00 -0300
 
 

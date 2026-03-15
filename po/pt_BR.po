@@ -1,0 +1,88 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <perry.werneck@gmail.com>, 2022.
+# Perry Werneck <perry.werneck@gmail.com>, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: udjat-module-sysinfo 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-15 12:34-0300\n"
+"PO-Revision-Date: 2022-10-19 20:37-0300\n"
+"Last-Translator: Perry Werneck <perry.werneck@gmail.com>\n"
+"Language-Team: Brazilian Portuguese <perry.werneck@gmail.com>\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Portuguese\n"
+"X-Poedit-Country: BRAZIL\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"X-Generator: Gtranslator 3.38.0\n"
+
+#: src/library/agent.cc:106
+msgid "Storage"
+msgstr ""
+
+#: src/library/agent.cc:106
+msgid "Physical disks"
+msgstr ""
+
+#: src/library/agent.cc:184
+msgid "Unable to get disk info"
+msgstr ""
+
+#: src/library/agent.cc:219
+msgid "${name} Health is Good"
+msgstr ""
+
+#: src/library/agent.cc:226
+msgid "Pre fail in the past on ${name}"
+msgstr ""
+
+#: src/library/agent.cc:227
+msgid ""
+"At least one pre-fail attribute exceeded its threshold in the past on ${name}"
+msgstr ""
+
+#: src/library/agent.cc:233
+msgid "Bad sector on ${name}"
+msgstr ""
+
+#: src/library/agent.cc:234
+msgid "At least one bad sector on ${name}"
+msgstr ""
+
+#: src/library/agent.cc:240
+msgid "Pre fail exceeded on ${name}"
+msgstr ""
+
+#: src/library/agent.cc:241
+msgid ""
+"At least one pre-fail attribute is exceeding its threshold now on ${name}"
+msgstr ""
+
+#: src/library/agent.cc:247
+msgid "Too many bad sectors on ${name}"
+msgstr ""
+
+#: src/library/agent.cc:254
+msgid "Smart Self Assessment negative on ${name}"
+msgstr ""
+
+#~ msgid "Average system load in the last minute"
+#~ msgstr "Média de carga do sistema no último mínuto"
+
+#~ msgid "Average system load in the last five minutes"
+#~ msgstr "Média de carga do sistema nos últimos cinco minutos"
+
+#~ msgid "Average system load in the last fifteen minutes"
+#~ msgstr "Média de carga do sistema nos últimos quinze minutos."
+
+#~ msgid "Average disk speed"
+#~ msgstr "Velocidade média do disco"
+
+#~ msgid " in "
+#~ msgstr " em "
