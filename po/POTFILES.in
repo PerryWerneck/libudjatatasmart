@@ -3,3 +3,8 @@ src/library/agent.cc
 src/library/disk.cc
 src/library/module.cc
 src/library/temperature.cc
+src/include/udjat/tools/temperature.h
+src/include/udjat/tools/atasmart/disk.h
+src/include/udjat/agent/atasmart.h
+src/include/udjat/module/atasmart.h
+src/module/private.h
