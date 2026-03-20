@@ -62,19 +62,6 @@ else
   extra_libs += [ libudjat ]
 endif
 
-sysinfo = dependency('libudjatsysinfo', required: false)
-if sysinfo.found()
-  lib_deps += [ sysinfo ]
-else
-  sysinfo_s = dependency(
-      'sysinfo',
-      required: true,
-      fallback: [ 'sysinfo', 'static_library' ],
-      default_options: ['default_library=static']  
-  ) 
-  extra_libs += [ sysinfo_s ]
-endif
-
 
 #
 # Compiler flags
@@ -126,8 +113,19 @@ if cxx.compiles('#include <unistd.h>', name : 'unistd.h')
   app_conf.set('HAVE_UNISTD_H', 1)
 endif
 
+sysinfo = dependency('libudjatsysinfo', required: false)
 if sysinfo.found()
+  lib_deps += [ sysinfo ]
   app_conf.set('HAVE_UDJAT_SYSINFO', 1)
+else
+  sysinfo_s = dependency(
+      'sysinfo',
+      required: true,
+      fallback: [ 'sysinfo', 'static_library' ],
+      default_options: ['default_library=static']  
+  ) 
+  app_conf.set('HAVE_UDJAT_SYSINFO', 1)
+  extra_libs += [ sysinfo_s ]
 endif
 
 includes_dir = include_directories('src/include')

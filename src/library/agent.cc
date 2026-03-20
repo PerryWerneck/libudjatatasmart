@@ -38,9 +38,9 @@
  #include <udjat/tools/intl.h>
  #include <udjat/tools/atasmart/disk.h>
 
-#ifdef HAVE_UDJAT_SYSINFO
- #include <udjat/tools/disk/stat.h>
-#endif
+ #ifdef HAVE_UDJAT_SYSINFO
+	#include <udjat/tools/storage/stat.h>
+ #endif
  
  using namespace std;
 
@@ -107,11 +107,13 @@
 
 					Object::properties.icon = "drive-multidisk";
 
-					for(const Udjat::Disk::Stat &disk : Udjat::Disk::Stat::get()) {
+					for(const Udjat::Storage::Stat &disk : Udjat::Storage::Stat::get()) {
 
-						if(!disk.name.empty() && disk.physical()) {
-							Logger::String{"Build child '",disk.name.c_str(),"'"}.trace(name());
-							std::shared_ptr<Udjat::Abstract::Agent> agent = make_shared<Smart::Agent>(String{disk.name}.as_quark(),node);
+						const char *diskname = disk.name();
+
+						if(diskname && *diskname && disk.physical()) {
+							Logger::String{"Build child '",diskname,"'"}.trace(name());
+							std::shared_ptr<Udjat::Abstract::Agent> agent = make_shared<Smart::Agent>(String{diskname}.as_quark(),node);
 							Udjat::Abstract::Agent::push_back(agent);
 						}
 
