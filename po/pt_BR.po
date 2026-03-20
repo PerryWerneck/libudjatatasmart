@@ -8,67 +8,63 @@ msgid ""
 msgstr ""
 "Project-Id-Version: udjat-module-sysinfo 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-19 22:15-0300\n"
-"PO-Revision-Date: 2022-10-19 20:37-0300\n"
+"POT-Creation-Date: 2026-03-19 22:28-0300\n"
+"PO-Revision-Date: 2026-03-19 22:29-0300\n"
 "Last-Translator: Perry Werneck <perry.werneck@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <perry.werneck@gmail.com>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Portuguese\n"
-"X-Poedit-Country: BRAZIL\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
-"X-Generator: Gtranslator 3.38.0\n"
+"X-Generator: Poedit 3.8\n"
 
 #: src/library/agent.cc:106
 msgid "Storage"
-msgstr ""
+msgstr "Armazenamento"
 
 #: src/library/agent.cc:106
 msgid "Physical disks"
-msgstr ""
+msgstr "Discos físicos"
 
-#: src/library/agent.cc:184
+#: src/library/agent.cc:186
 msgid "Unable to get disk info"
-msgstr ""
+msgstr "Incapaz de obter informações do disco"
 
-#: src/library/agent.cc:219
+#: src/library/agent.cc:221
 msgid "${name} Health is Good"
-msgstr ""
+msgstr "Unidade ${name} está saudável"
 
-#: src/library/agent.cc:226
+#: src/library/agent.cc:228
 msgid "Pre fail in the past on ${name}"
 msgstr ""
 
-#: src/library/agent.cc:227
-msgid ""
-"At least one pre-fail attribute exceeded its threshold in the past on ${name}"
+#: src/library/agent.cc:229
+msgid "At least one pre-fail attribute exceeded its threshold in the past on ${name}"
 msgstr ""
 
-#: src/library/agent.cc:233
+#: src/library/agent.cc:235
 msgid "Bad sector on ${name}"
-msgstr ""
+msgstr "Setor ruim em ${name}"
 
-#: src/library/agent.cc:234
+#: src/library/agent.cc:236
 msgid "At least one bad sector on ${name}"
-msgstr ""
+msgstr "Pelo menos um setor ruim em ${name}"
 
-#: src/library/agent.cc:240
+#: src/library/agent.cc:242
 msgid "Pre fail exceeded on ${name}"
 msgstr ""
 
-#: src/library/agent.cc:241
-msgid ""
-"At least one pre-fail attribute is exceeding its threshold now on ${name}"
+#: src/library/agent.cc:243
+msgid "At least one pre-fail attribute is exceeding its threshold now on ${name}"
 msgstr ""
 
-#: src/library/agent.cc:247
+#: src/library/agent.cc:249
 msgid "Too many bad sectors on ${name}"
-msgstr ""
+msgstr "Muitos setores ruins em ${name}"
 
-#: src/library/agent.cc:254
+#: src/library/agent.cc:256
 msgid "Smart Self Assessment negative on ${name}"
 msgstr ""
 
