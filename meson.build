@@ -46,12 +46,35 @@ subdir('po')
 #
 # Required libraries
 #
-libudjat = dependency('libudjat') 
-sysinfo = dependency('libudjatsysinfo-static', required: false)
-lib_deps = [
-  libudjat,
-  sysinfo,
-]
+lib_deps = []
+extra_libs = []
+
+libudjat = dependency('libudjat', required: false)
+if libudjat.found()
+  lib_deps += [ libudjat ]
+else
+  libudjat = dependency(
+      'libudjat',
+      required: true,
+      fallback: [ 'libudjat', 'static_library' ],
+      default_options: ['default_library=static']  
+  ) 
+  extra_libs += [ libudjat ]
+endif
+
+sysinfo = dependency('libudjatsysinfo', required: false)
+if sysinfo.found()
+  lib_deps += [ sysinfo ]
+else
+  sysinfo_s = dependency(
+      'sysinfo',
+      required: true,
+      fallback: [ 'sysinfo', 'static_library' ],
+      default_options: ['default_library=static']  
+  ) 
+  extra_libs += [ sysinfo_s ]
+endif
+
 
 #
 # Compiler flags
@@ -142,7 +165,7 @@ if host_machine.system() == 'windows'
   pkg.generate(
     name: 'lib' + meson.project_name(),
     description: project_description,
-    requires: [ libudjat ],
+    requires: [ 'libudjat' ],
     requires_private: [ sysinfo ],
     libraries: [ '-l' + meson.project_name() + '.dll' ]
   )
@@ -157,7 +180,7 @@ else
   pkg.generate(
     name: 'lib' + meson.project_name(),
     description: project_description,
-    requires: [ libudjat ],
+    requires: [ 'libudjat' ],
     requires_private: [ sysinfo, atasmart ],
     libraries: [ '-l' + meson.project_name() ]
   )
@@ -193,7 +216,7 @@ if host_machine.system() == 'windows'
     version : libversion,
     soversion : libversion,
     gnu_symbol_visibility: 'hidden',
-    dependencies: lib_deps,
+    dependencies: lib_deps + extra_libs,
     link_args: [ 
       '-lws2_32',
     ],
@@ -209,7 +232,7 @@ if host_machine.system() == 'windows'
     link_with: dynamic,
     install_dir: libudjat.get_variable('module_path'),
     gnu_symbol_visibility: 'hidden',
-    dependencies: lib_deps,
+    dependencies: lib_deps + extra_libs,
     include_directories: includes_dir
   )
 
@@ -222,7 +245,7 @@ else
     version : libversion,
     soversion : libversion,
     gnu_symbol_visibility: 'hidden',
-    dependencies: lib_deps,
+    dependencies: lib_deps + extra_libs,
     include_directories: includes_dir
   )
 
@@ -236,7 +259,7 @@ else
     link_with: dynamic,
     install_dir: libudjat.get_variable('module_path'),
     gnu_symbol_visibility: 'hidden',
-    dependencies: lib_deps,
+    dependencies: lib_deps + extra_libs,
     include_directories: includes_dir
   )
 
@@ -245,12 +268,12 @@ else
       meson.project_name(), 
       config_src + lib_src,
       install: true,
-      dependencies: lib_deps,
+    dependencies: lib_deps + extra_libs,
       cpp_args: [ '-DSTATIC_LIBRARY', '-fno-lto' ],
       include_directories: includes_dir
     ),
     include_directories: includes_dir,
-    dependencies: lib_deps,
+    dependencies: lib_deps + extra_libs,
   )
 
 endif
