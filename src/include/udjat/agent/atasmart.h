@@ -65,7 +65,7 @@
 			void start() override;
 			
 			/// @brief Get device status, update internal state.
-			bool refresh() override;
+			bool refresh(bool) override;
 
 			std::shared_ptr<Abstract::State> computeState() override;
 

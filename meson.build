@@ -20,7 +20,7 @@
 project(
 	'udjatatasmart', 
 	['cpp'],
-	version: '2.0.0',
+	version: '2.1.0',
 	default_options : ['c_std=c11', 'cpp_std=c++17'],
 	license: 'GPL-3.0-or-later',
 )

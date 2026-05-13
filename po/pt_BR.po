@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: udjat-module-sysinfo 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-19 22:28-0300\n"
+"POT-Creation-Date: 2026-03-19 22:30-0300\n"
 "PO-Revision-Date: 2026-03-19 22:29-0300\n"
 "Last-Translator: Perry Werneck <perry.werneck@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <perry.werneck@gmail.com>\n"
@@ -41,7 +41,8 @@ msgid "Pre fail in the past on ${name}"
 msgstr ""
 
 #: src/library/agent.cc:229
-msgid "At least one pre-fail attribute exceeded its threshold in the past on ${name}"
+msgid ""
+"At least one pre-fail attribute exceeded its threshold in the past on ${name}"
 msgstr ""
 
 #: src/library/agent.cc:235
@@ -57,7 +58,8 @@ msgid "Pre fail exceeded on ${name}"
 msgstr ""
 
 #: src/library/agent.cc:243
-msgid "At least one pre-fail attribute is exceeding its threshold now on ${name}"
+msgid ""
+"At least one pre-fail attribute is exceeding its threshold now on ${name}"
 msgstr ""
 
 #: src/library/agent.cc:249

@@ -154,7 +154,7 @@
 		super::start((unsigned short) Smart::Disk(devname).read().getOverral());
 	}
 
-	bool Smart::Agent::refresh() {
+	bool Smart::Agent::refresh(bool) {
 		return set((unsigned short) Smart::Disk(devname).read().getOverral());
 	}
 
