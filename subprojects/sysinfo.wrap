@@ -1,5 +1,5 @@
 [wrap-git]
 url = https://github.com/PerryWerneck/libudjatsysinfo.git
-revision = HEAD
+revision = develop
 depth = 1
 
