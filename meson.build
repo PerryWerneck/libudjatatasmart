@@ -49,12 +49,13 @@ subdir('po')
 lib_deps = []
 extra_libs = []
 
-libudjat = dependency('libudjat', required: false)
+libudjat = dependency('libudjat', version: '>=2.6.0', required: false)
 if libudjat.found()
   lib_deps += [ libudjat ]
 else
   libudjat = dependency(
       'libudjat',
+      version: '>=2.6.0',
       required: true,
       fallback: [ 'libudjat', 'static_library' ],
       default_options: ['default_library=static']  
@@ -80,6 +81,7 @@ compiler_flags = [
   '-fvisibility=hidden',
   '-fPIC',
   '-DHAVE_CONFIG_H=1',
+  '-Wno-overloaded-virtual',
   '-DBUILD_DATE='+time_epoch,
 ]
 
