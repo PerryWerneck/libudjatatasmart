@@ -19,13 +19,14 @@
 
  #include <config.h>
  #include <udjat/module.h>
- #include <udjat/module.h>
+ #include <udjat/module/abstract.h>
  #include <udjat/module/atasmart.h>
  #include <udjat/tools/logger.h>
+ #include <udjat/tools/properties.h>
 
  using namespace Udjat;
 
- Udjat::Module * udjat_module_init(const Udjat::XML::Node &) {
+ Udjat::Module * udjat_module_init(const Udjat::Properties &) {
 	return Smart::Module::Factory();
  }
 

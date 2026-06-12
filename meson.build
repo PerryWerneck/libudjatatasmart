@@ -49,13 +49,13 @@ subdir('po')
 lib_deps = []
 extra_libs = []
 
-libudjat = dependency('libudjat', version: '>=2.6.0', required: false)
+libudjat = dependency('libudjat', version: '>=2.7.0', required: false)
 if libudjat.found()
   lib_deps += [ libudjat ]
 else
   libudjat = dependency(
       'libudjat',
-      version: '>=2.6.0',
+      version: '>=2.7.0',
       required: true,
       fallback: [ 'libudjat', 'static_library' ],
       default_options: ['default_library=static']  
