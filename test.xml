@@ -5,6 +5,7 @@
 	<!-- module name='http' required='no' / -->
 	<module name='civetweb' required='no' />
 	<module name='information' required='no' />
+	<module path='.build/udjat-module-atasmart.so' required='yes' />
 
 	<!-- Container with all physical disks -->
 	<agent name='physical' type='storage' update-timer='5' />

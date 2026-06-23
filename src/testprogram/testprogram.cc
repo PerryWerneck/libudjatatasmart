@@ -19,16 +19,15 @@
 
  #include <config.h>
  #include <udjat/defs.h>
- #include <udjat/loader.h>
+ #include <udjat/tools/loader.h>
  #include <udjat/module.h>
 
  using namespace Udjat;
 
- int main(int argc, char **argv) {
+ int main(const int argc, const char **argv) {
 
 	return loader(argc,argv,[](Application &app) -> int {
 
-	 	udjat_module_init();
 		return 0;
 		
 	});
