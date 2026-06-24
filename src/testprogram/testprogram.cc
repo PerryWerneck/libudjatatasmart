@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: LGPL-3.0-or-later */
 
 /*
- * Copyright (C) 2021 Perry Werneck <perry.werneck@gmail.com>
+ * Copyright (C) 2026 Perry Werneck <perry.werneck@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published
@@ -20,16 +20,12 @@
  #include <config.h>
  #include <udjat/defs.h>
  #include <udjat/tools/loader.h>
- #include <udjat/module.h>
-
+ 
  using namespace Udjat;
-
- int main(const int argc, const char **argv) {
-
-	return loader(argc,argv,[](Application &app) -> int {
-
+ 
+ int main(int argc, char **argv) {
+	return loader(argc, argv, [](const LoaderMode mode, Application &app, const char *arg){
 		return 0;
-		
 	});
 
  }
