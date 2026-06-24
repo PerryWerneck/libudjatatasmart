@@ -3,3 +3,5 @@ url = https://github.com/PerryWerneck/libudjat
 revision = develop
 depth = 1
 
+[provide]
+libudjat = dynamic_library

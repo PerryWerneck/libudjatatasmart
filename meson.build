@@ -57,8 +57,7 @@ else
       'libudjat',
       version: '>=2.7.0',
       required: true,
-      fallback: [ 'libudjat', 'static_library' ],
-      default_options: ['default_library=static']  
+      fallback: [ 'libudjat' ],
   ) 
   extra_libs += [ libudjat ]
 endif
@@ -118,12 +117,11 @@ endif
 sysinfo = dependency('libudjatsysinfo', required: false)
 if sysinfo.found()
   lib_deps += [ sysinfo ]
-  app_conf.set('HAVE_UDJAT_SYSINFO', 1)
 else
   sysinfo_s = dependency(
       'sysinfo',
       required: true,
-      fallback: [ 'sysinfo', 'static_library' ],
+      fallback: [ 'sysinfo' ],
       default_options: ['default_library=static']  
   ) 
   app_conf.set('HAVE_UDJAT_SYSINFO', 1)
@@ -174,7 +172,8 @@ else
 
   atasmart = dependency('libatasmart')
   lib_deps += [
-    atasmart
+    atasmart,
+    dependency('pugixml',method : 'pkg-config',required: true),
   ]
 
   pkg.generate(

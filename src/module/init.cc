@@ -19,7 +19,7 @@
 
  #include <config.h>
  #include <udjat/module.h>
- #include <udjat/module/abstract.h>
+ #include <udjat/module.h>
  #include <udjat/module/atasmart.h>
  #include <udjat/tools/logger.h>
  #include <udjat/tools/properties.h>

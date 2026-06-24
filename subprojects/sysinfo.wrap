@@ -3,3 +3,5 @@ url = https://github.com/PerryWerneck/libudjatsysinfo.git
 revision = develop
 depth = 1
 
+[provide]
+sysinfo = static_library
